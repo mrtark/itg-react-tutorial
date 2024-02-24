@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
+import Swal from 'sweetalert2';
+
 
 function AddCategories() {
 
@@ -15,11 +17,21 @@ function AddCategories() {
 
         axios.post("https://northwind.vercel.app/api/categories", newProduct)
             .then(x => {
-                alert("Add Sucess!");
+                success();
             })
             .catch(ex => {
                 alert("hata : " + ex)
             })
+    }
+
+    const success = () => {
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Kaydedildi",
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 
     return (

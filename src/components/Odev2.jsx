@@ -3,6 +3,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import { trTR } from '@mui/material/locale';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 function Odev2() {
     const [orders, setOrders] = useState([]);
@@ -88,11 +90,27 @@ function Odev2() {
             headerName: "Sil",
             width: 200,
             renderCell: (x => {
-                return <button className='btn btn-danger' onClick={() => deleteOrder(x.row.id)}>Sil</button>
+                return <button className='btn btn-danger' onClick={() => handleDelete(x.row.id)}>Sil</button>
             })
         }
 
     ];
+
+    const handleDelete = (id) => {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: 'Bu öğeyi silmek istediğinizden emin misiniz?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Evet, sil',
+        cancelButtonText: 'İptal',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteOrder(id);
+        }
+    });
+};
+
 
     return (
         <ThemeProvider theme={theme}>
