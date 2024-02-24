@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import { trTR } from '@mui/material/locale';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import FavoriOrders from './FavoriOrders';
+import { FavoritesContext } from '../contexts/FavoritesContext';
 
 
 function Odev2() {
+
     const [orders, setOrders] = useState([]);
 
     const loadData = () => {
         axios.get("https://northwind.vercel.app/api/orders").then(x => { setOrders(x.data) });
     }
+
+    const { addToFavorites } = useContext(FavoritesContext)
 
     useEffect(() => {
         loadData();
@@ -54,9 +59,11 @@ function Odev2() {
     const deleteOrder = (id) => {
         axios.delete('https://northwind.vercel.app/api/orders/' + id).then(x => {
             loadData();
+        }).catch(e => {
+            error(e);
+            console.log(e);
         });
     }
-
 
     const columns = [
         {
@@ -92,25 +99,59 @@ function Odev2() {
             renderCell: (x => {
                 return <button className='btn btn-danger' onClick={() => handleDelete(x.row.id)}>Sil</button>
             })
+        },
+        {
+            field: "addFav",
+            headerName: "Favoriye Ekle",
+            width: 200,
+            renderCell: (x => {
+                return <button className='btn btn-primary' onClick={() => addFav(x.row)}>Favoriye Ekle</button>
+            })
         }
 
     ];
 
     const handleDelete = (id) => {
-    Swal.fire({
-        title: 'Emin misiniz?',
-        text: 'Bu öğeyi silmek istediğinizden emin misiniz?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Evet, sil',
-        cancelButtonText: 'İptal',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            deleteOrder(id);
-        }
-    });
-};
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: 'Bu öğeyi silmek istediğinizden emin misiniz?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Evet, sil',
+            cancelButtonText: 'İptal',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteOrder(id);
+                success();
+            }
+        });
+    };
 
+    const success = (row) => {
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            text: "[ " + row.customerId + " ] Favoriye Eklendi.",
+            showConfirmButton: false,
+            timer: 700
+        });
+    }
+
+    const error = (e) => {
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Hata",
+            text: e,
+            showConfirmButton: false,
+            timer: 700
+        });
+    }
+
+    const addFav = (id) => {
+        addToFavorites(id.customerId);
+        success(id);
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -125,8 +166,15 @@ function Odev2() {
                     </div>
                 </div>
             </div>
+
+            <FavoriOrders></FavoriOrders>
+
         </ThemeProvider>
-        
+
+
+
+
+
     );
 }
 
