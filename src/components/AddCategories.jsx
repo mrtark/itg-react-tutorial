@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Swal from 'sweetalert2';
 
 
-function AddCategories() {
+function AddCategories({onCategoryAdd}) {
 
     const [name, setname] = useState("");
     const [description, setdescription] = useState("");
@@ -18,6 +18,9 @@ function AddCategories() {
         axios.post("https://northwind.vercel.app/api/categories", newProduct)
             .then(x => {
                 success();
+                if(onCategoryAdd){
+                    onCategoryAdd();
+                }
             })
             .catch(ex => {
                 alert("hata : " + ex)

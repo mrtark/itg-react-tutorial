@@ -8,7 +8,7 @@ function Categories() {
     const [categories, setcategories] = useState([]);
     const [loading, setloading] = useState(true);
 
-    useEffect(() => {
+    const loadData = () => {
         axios.get("https://northwind.vercel.app/api/categories").then(x => {
 
             if (x.status === 200) {
@@ -24,6 +24,10 @@ function Categories() {
             .finally(x => {
                 setloading(false);
             })
+    }
+
+    useEffect(() => {
+        loadData();
     }, [])
 
     return (
@@ -67,7 +71,7 @@ function Categories() {
                 </div>
             )}
 
-            <AddCategories></AddCategories>
+            <AddCategories onCategoryAdd={loadData}></AddCategories>
         </>
 
     )

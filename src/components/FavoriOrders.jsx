@@ -10,7 +10,7 @@ function FavoriOrders() {
     <>
         
 
-        <div className="card mt-4">
+        <div className="card mt-4 mx-auto w-75 shadow">
         <div className="card-body">
         <button type="button" className="btn btn-warning" onClick={() => clear()}>Temizle</button>
             <h4 className="card-title text-center">Favoriler</h4>

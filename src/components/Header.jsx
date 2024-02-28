@@ -11,7 +11,7 @@ function Header(props) {
                     <NavLink className="nav-item nav-link"><Link to="/suppliers">Suppliers</Link></NavLink>
                     <NavLink className="nav-item nav-link"><Link to="/stateIntro">State</Link></NavLink>
                     <NavLink className="nav-item nav-link"><Link to="/odev1">Ödev_1</Link></NavLink>
-                    <NavLink className="nav-item nav-link"><Link to="/categories">Categories & Axios</Link></NavLink>
+                    <NavLink className="nav-item nav-link"><Link to="/categories">Categories</Link></NavLink>
                     <NavLink className="nav-item nav-link"><Link to="/grid">Grid</Link></NavLink>
                     <NavLink className="nav-item nav-link"><Link to="/odev2">Ödev_2</Link></NavLink>
                     <NavLink className="nav-item nav-link"><Link to="/about">ABOUT</Link></NavLink>
